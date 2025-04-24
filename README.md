@@ -1,33 +1,33 @@
 # **Task Management API with Supabase Auth**
 
 ## **Description**
-API de gestion de tâches avec authentification via Supabase, permettant :
-- L'inscription et la connexion des utilisateurs
-- La gestion CRUD des tâches
-- Le suivi des statuts des tâches
-- L'analyse des performances
+Task management API with Supabase authentication, providing:
+- User registration and login
+- CRUD operations for tasks
+- Task status tracking
+- Performance analytics
 
 ## **Technologies**
-- Backend : Node.js + Express
-- Base de données : PostgreSQL (via Supabase)
-- Authentification : Supabase Auth + JWT
-- ORM : Prisma (optionnel)
+- Backend: Node.js + Express
+- Database: PostgreSQL (via Supabase)
+- Authentication: Supabase Auth + JWT
+- ORM: Prisma (optional)
 
-## **Prérequis**
-| Composant       | Lien/Lien de téléchargement       |
+## **Prerequisites**
+| Component       | Download/Link                     |
 |-----------------|-----------------------------------|
 | Node.js (v14+)  | [https://nodejs.org/](https://nodejs.org/) |
-| Compte Supabase | [https://app.supabase.io/](https://app.supabase.io/) |
-| PostgreSQL      | Inclus avec Supabase              |
+| Supabase Account | [https://app.supabase.io/](https://app.supabase.io/) |
+| PostgreSQL      | Included with Supabase            |
 
 ## **Installation**
 ```bash
-# 1. Cloner le dépôt
+# 1. Clone the repository
 git clone https://github.com/yourusername/task-management-api.git
 cd task-management-api
 
-# 2. Installer les dépendances
+# 2. Install dependencies
 npm install
 
-# 3. Configurer l'environnement
+# 3. Configure environment
 cp .env.example .env
