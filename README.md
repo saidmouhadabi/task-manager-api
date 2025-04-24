@@ -1,38 +1,143 @@
-# Task Management API
+2. Install dependencies
+Run the following command to install the necessary dependencies:
 
-## Overview
+bash
+Copier
+Modifier
+npm install
+3. Set up environment variables
+Create a .env file in the root directory by copying the .env.example file provided:
 
-The **Task Management API** is a backend service designed for managing tasks, handling user authentication, and providing analytics for task statuses (such as completed and overdue tasks). This API allows users to register, log in, and perform CRUD operations on tasks. Additionally, it offers task-related statistics.
+bash
+Copier
+Modifier
+cp .env.example .env
+Now, open the .env file and replace the placeholder values with your actual values from Supabase:
 
-This API is built using **Node.js**, **Express**, and **Supabase** to handle authentication and data storage.
+ini
+Copier
+Modifier
+SUPABASE_URL=your_supabase_url
+SUPABASE_ANON_KEY=your_supabase_anon_key
+SERVER_HOST=localhost
+SERVER_PORT=3000
+SUPABASE_URL: The URL for your Supabase project (find it in the Supabase dashboard).
 
-## Features
+SUPABASE_ANON_KEY: The public anon key for your Supabase project (available in the Supabase dashboard).
 
-- **User Authentication**: Allows users to register and log in with email and password.
-- **Task Management**: Perform CRUD operations on tasks.
-- **Task Analytics**: View statistics on task statuses (e.g., completed, overdue).
-- **Environment Configuration**: Easily configurable server host and port via environment variables.
+SERVER_HOST: The host for your server (default: localhost).
 
-## Tech Stack
+SERVER_PORT: The port on which the server will run (default: 3000).
 
-- **Node.js**: JavaScript runtime used for building the backend API.
-- **Express**: Web framework for Node.js used to build the RESTful API.
-- **Supabase**: Open-source backend-as-a-service platform used for user authentication and database management.
-- **Body-Parser**: Middleware used for parsing incoming request bodies.
+4. Set up the Database (Supabase)
+Go to your Supabase dashboard.
 
-## Prerequisites
+Create a new project if you haven’t already.
 
-To run this project locally, make sure you have the following installed:
+In the SQL Editor of Supabase, run the following migration SQL to create the necessary tables for tasks and categories.
 
-- **Node.js**: [Download Node.js](https://nodejs.org/)
-- **npm** (Node Package Manager): Comes bundled with Node.js.
+migration.sql
+sql
+Copier
+Modifier
+-- Table Categories
+create table categories (
+  id uuid primary key default gen_random_uuid(),
+  name text not null
+);
 
-## Installation and Setup
+-- Table Tasks
+create table tasks (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  description text,
+  status text check (status in ('pending', 'in_progress', 'done', 'overdue')) default 'pending',
+  due_date date,
+  user_id uuid references auth.users(id),
+  category_id uuid references categories(id),
+  created_at timestamp default now()
+);
+5. Run the application
+Once everything is set up, you can start the server using:
 
-### 1. Clone the Repository
+bash
+Copier
+Modifier
+npm start
+The application will run on http://localhost:3000.
 
-Start by cloning the repository to your local machine:
+API Endpoints
+1. Authentication
+POST /auth/signup: Registers a new user.
 
-```bash
-git clone https://github.com/yourusername/task-management-api.git
-cd task-management-api
+Request Body:
+
+json
+Copier
+Modifier
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+Response:
+
+json
+Copier
+Modifier
+{
+  "user": { ...user data... }
+}
+POST /auth/login: Logs in a user.
+
+Request Body:
+
+json
+Copier
+Modifier
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+Response:
+
+json
+Copier
+Modifier
+{
+  "user": { ...user data... }
+}
+2. Tasks
+POST /tasks: Create a new task.
+
+Request Body:
+
+json
+Copier
+Modifier
+{
+  "title": "Task 1",
+  "description": "Task description",
+  "due_date": "2023-12-31",
+  "category_id": "category_uuid",
+  "user_id": "user_uuid"
+}
+GET /tasks: Get all tasks.
+
+GET /tasks/:id: Get a task by its ID.
+
+PUT /tasks/:id: Update a task.
+
+DELETE /tasks/:id: Delete a task.
+
+3. Categories
+POST /categories: Create a new category.
+
+Request Body:
+
+json
+Copier
+Modifier
+{
+  "name": "Category 1"
+}
+GET /categories: Get all categories.
